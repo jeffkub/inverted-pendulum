@@ -37,13 +37,13 @@ Bhat = [B; 0];
 # Determine the state feedback gain matrix
 Khat = place(Ahat, Bhat, J);
 K = Khat(1:4)
-KI = -Khat(5)
+kI = -Khat(5)
 
 # Calculate the step response
 ts = 0.02;
 t = 0:ts:6;
 
-AA = [(A - B*K) B*KI;
+AA = [(A - B*K) B*kI;
              -C    0];
 
 BB = [0 0 0 0 1]';
@@ -54,6 +54,8 @@ DD = [0];
 
 sys = ss(AA, BB, CC, DD);
 [y, t, x] = step(sys, t);
+
+u = (-K*x(:,1:4)' + kI*x(:,5)')';
 
 # Plot the step response
 subplot(3,2,1)
@@ -90,3 +92,10 @@ grid
 title('\zeta vs t')
 xlabel('t [s]')
 ylabel('\zeta [m]')
+
+subplot(3,2,6)
+plot(t, u)
+grid
+title('u vs t')
+xlabel('t [s]')
+ylabel('u [N]')
