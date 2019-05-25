@@ -1,0 +1,42 @@
+{
+	"x_scale": {
+		"comment": "X position encoder scale",
+		"val": 3.33333E-05,
+		"unit": "m/step"
+	},
+
+	"theta_scale": {
+		"comment": "Theta angle encoder scale",
+		"val": 0.005235988,
+		"unit": "rad/step"
+	},
+
+	"motor_scale": {
+		"comment": "Motor force scale",
+		"val": 0.002302528,
+		"unit": "N/step"
+	},
+
+	"motor_offset": {
+		"comment": "Motor force offset to account for friction",
+		"val": 0.9,
+		"unit": "N"
+	},
+
+	"guard": {
+		"comment": "X position guard to avoid hitting the end stops",
+		"val": 0.01,
+		"unit": "m"
+	},
+
+	"dt": {
+		"comment": "Time step",
+		"val": 0.02,
+		"unit": "s"
+	},
+
+	"Khat": {
+		"comment": "State feedback gain matrix",
+		"val": [-157.634, -35.373, -56.065, -36.747, 50.968]
+	}
+}
