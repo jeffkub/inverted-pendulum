@@ -44,7 +44,7 @@ class Controller:
 		self.cart.goTo(0.0)
 
 		# Wait for the pendulum to be moved into position by hand
-		# TODO
+		self.cart.waitForPendulum()
 
 		# Control loop
 		self.last_time = time.time()

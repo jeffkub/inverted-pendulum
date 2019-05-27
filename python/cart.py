@@ -1,4 +1,5 @@
 import math
+import time
 
 import numpy as np
 
@@ -76,7 +77,7 @@ class Cart:
 		self.sensors.read()
 
 		offset = self._getTheta()
-		self._setThetaOffset(-offset)
+		self._setThetaOffset(-offset + math.pi)
 
 	# Unit is [m]
 	def goTo(self, position):
@@ -96,6 +97,24 @@ class Cart:
 
 	def checkLimits(self):
 		return abs(self.last_x) <= (self.limit - self.guard)
+
+	def waitForPendulum(self):
+		while True:
+			self.sensors.read()
+			theta = self._getTheta()
+
+			# Wait for pendulum to be close to vertical
+			if abs(theta) < (0.1 * math.pi):
+				break
+
+			# Adjust depending on direction the user has rotated the pendulum
+			if theta > (1.5 * math.pi):
+				self._setThetaOffset(-2.0 * math.pi)
+			elif theta < (-1.5 * math.pi):
+				self._setThetaOffset(2.0 * math.pi)
+
+			# Wait a bit
+			time.sleep(0.1)
 
 	def resetState(self):
 		self.sensors.read()
