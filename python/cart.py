@@ -24,9 +24,15 @@ class Cart:
 		# Unit is [m]
 		return self.sensors.getEncoder(0) * self.x_scale
 
+	def _setXOffset(self, offset):
+		self.sensors.setEncoderOffset(0, offset / self.x_scale)
+
 	def _getTheta(self):
 		# Unit is [rad]
 		return self.sensors.getEncoder(1) * self.theta_scale
+
+	def _setThetaOffset(self, offset):
+		self.sensors.setEncoderOffset(1, offset / self.theta_scale)
 
 	def findLimits(self):
 		self.sensors.read()
@@ -35,26 +41,28 @@ class Cart:
 		while not self.sensors.getSwitch(0):
 			self.sensors.read()
 
-		x_min = self.sensors.getEncoder(0)
+		x_min = self._getX()
 
 		self.motor.setMotorV(5)
 		while not self.sensors.getSwitch(1):
 			self.sensors.read()
 
-		x_max = self.sensors.getEncoder(0)
+		x_max = self._getX()
 
 		self.motor.setMotorV(0)
 
+		# Center the X axis origin
 		offset = (x_min + x_max) / 2
-		self.sensors.setEncoderOffset(0, -offset)
+		self._setXOffset(-offset)
 
-		self.limit = (x_max - x_min) / 2 * self.x_scale
+		# Limit is +/- about the origin
+		self.limit = (x_max - x_min) / 2
 
 	def zeroTheta(self):
 		self.sensors.read()
 
-		offset = self.sensors.getEncoder(1)
-		self.sensors.setEncoderOffset(1, -offset)
+		offset = self._getTheta()
+		self._setThetaOffset(-offset)
 
 	def goTo(self, position):
 		# Unit is [m]
