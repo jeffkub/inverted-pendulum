@@ -10,21 +10,26 @@ class Cart:
 		pulley_teeth = params['pulley_teeth']['val']
 		belt_pitch = params['belt_pitch']['val']
 
-		self.guard = params['guard']['val']
+		self.guard = params['guard']['val']			# [m]
 
 		self.x_scale = belt_pitch * pulley_teeth	# [m/rev]
 		self.theta_scale = 2 * math.pi				# [rad/rev]
+		self.motor_angle_scale = 2 * math.pi 		# [rad/rev]
 
-		self.limit = 0.0
+		self.limit = 0.0							# [m]
 
-		self.last_theta = 0.0
-		self.last_x = 0.0
+		self.last_theta = 0.0						# [rad]
+		self.last_x = 0.0							# [m]
+		self.last_motor_angle = 0.0					# [rad]
+
+		self.motor_vel = 0.0						# [rad/s]
 
 	def _getX(self):
 		# Unit is [m]
 		return self.sensors.getEncoder(0) * self.x_scale
 
 	def _setXOffset(self, offset):
+		# Unit is [m]
 		self.sensors.setEncoderOffset(0, offset / self.x_scale)
 
 	def _getTheta(self):
@@ -32,7 +37,12 @@ class Cart:
 		return self.sensors.getEncoder(1) * self.theta_scale
 
 	def _setThetaOffset(self, offset):
+		# Unit is [rad]
 		self.sensors.setEncoderOffset(1, offset / self.theta_scale)
+
+	def _getMotorAngle(self):
+		# Unit is [rad]
+		return self.sensors.getEncoder(0) * self.motor_angle_scale
 
 	def findLimits(self):
 		self.sensors.read()
@@ -81,7 +91,16 @@ class Cart:
 		self.motor.setMotorV(0)
 
 	def checkLimits(self):
-		return abs(self.last_x) < (self.limit - self.guard)
+		return abs(self.last_x) <= (self.limit - self.guard)
+
+	def resetState(self):
+		self.sensors.read()
+
+		self.motor_vel = 0.0
+
+		self.last_x = self._getX()
+		self.last_theta = self._getTheta()
+		self.last_motor_angle = self._getMotorAngle()
 
 	def nextState(self, dt):
 		# Unit is [s]
@@ -89,17 +108,22 @@ class Cart:
 
 		x = self._getX()
 		theta = self._getTheta()
+		motor_angle = self._getMotorAngle()
 
 		# State vector is [theta, theta_dot, x, x_dot]
 		state = np.array([
 			theta,
-			(theta - self.last_theta) * dt,
+			(theta - self.last_theta) / dt,
 			x,
-			(x - self.last_x) * dt
+			(x - self.last_x) / dt
 		])
+
+		# Motor angular velocity
+		self.motor_vel = (motor_angle - self.last_motor_angle) / dt
 
 		self.last_x = x
 		self.last_theta = theta
+		self.last_motor_angle = motor_angle
 
 		return state, x
 

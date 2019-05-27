@@ -50,7 +50,7 @@ class Controller:
 		self.last_time = time.time()
 		self.zeta = 0.0
 
-		self.cart.nextState(self.dt)
+		self.cart.resetState()
 
 		while True:
 			self._waitForNextStep()
@@ -69,14 +69,13 @@ def main(argv):
 
 	try:
 		controller.setup()
-
 		while True:
 			controller.run()
 	except Exception:
 		print(traceback.format_exc())
 
 	# Make sure to disable the motor before exiting
-	arduino.setMotor(0)
+	arduino.setMotorV(0)
 
 	return 0
 
