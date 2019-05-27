@@ -10,38 +10,42 @@ class Cart:
 		pulley_teeth = params['pulley_teeth']['val']
 		belt_pitch = params['belt_pitch']['val']
 
-		self.guard = params['guard']['val']			# [m]
+		self.guard = params['guard']['val']
+		self.pulley_radius = params['pulley_radius']['val']
+		self.motor_torque_coeff = params['motor_torque_coeff']['val']
+		self.motor_speed_coeff = params['motor_speed_coeff']['val']
+		self.motor_start_torque = params['motor_start_torque']['val']
 
-		self.x_scale = belt_pitch * pulley_teeth	# [m/rev]
-		self.theta_scale = 2 * math.pi				# [rad/rev]
-		self.motor_angle_scale = 2 * math.pi 		# [rad/rev]
+		self.x_scale = belt_pitch * pulley_teeth
+		self.theta_scale = 2 * math.pi
+		self.motor_angle_scale = 2 * math.pi
 
-		self.limit = 0.0							# [m]
+		self.limit = 0.0
 
-		self.last_theta = 0.0						# [rad]
-		self.last_x = 0.0							# [m]
-		self.last_motor_angle = 0.0					# [rad]
+		self.last_theta = 0.0
+		self.last_x = 0.0
+		self.last_motor_angle = 0.0
 
-		self.motor_vel = 0.0						# [rad/s]
+		self.motor_vel = 0.0
 
+	# Unit is [m]
 	def _getX(self):
-		# Unit is [m]
 		return self.sensors.getEncoder(0) * self.x_scale
 
+	# Unit is [m]
 	def _setXOffset(self, offset):
-		# Unit is [m]
 		self.sensors.setEncoderOffset(0, offset / self.x_scale)
 
+	# Unit is [rad]
 	def _getTheta(self):
-		# Unit is [rad]
 		return self.sensors.getEncoder(1) * self.theta_scale
 
+	# Unit is [rad]
 	def _setThetaOffset(self, offset):
-		# Unit is [rad]
 		self.sensors.setEncoderOffset(1, offset / self.theta_scale)
 
+	# Unit is [rad]
 	def _getMotorAngle(self):
-		# Unit is [rad]
 		return self.sensors.getEncoder(0) * self.motor_angle_scale
 
 	def findLimits(self):
@@ -74,8 +78,8 @@ class Cart:
 		offset = self._getTheta()
 		self._setThetaOffset(-offset)
 
+	# Unit is [m]
 	def goTo(self, position):
-		# Unit is [m]
 		self.sensors.read()
 
 		if (self._getX() - position) < -0.01:
@@ -102,8 +106,8 @@ class Cart:
 		self.last_theta = self._getTheta()
 		self.last_motor_angle = self._getMotorAngle()
 
+	# Unit is [s]
 	def nextState(self, dt):
-		# Unit is [s]
 		self.sensors.read()
 
 		x = self._getX()
@@ -127,7 +131,17 @@ class Cart:
 
 		return state, x
 
+	# Unit is [N]
 	def setForce(self, force):
-		# Unit is [N]
-		# TODO: Implement motor equation
-		self.motor.setMotorV(force)
+		# Disable motor if zero
+		if force == 0:
+			self.motor.setMotorV(0)
+			return
+
+		torque = abs(force) * self.pulley_radius + self.motor_start_torque
+		voltage = torque * self.motor_torque_coeff + self.motor_vel * self.motor_speed_coeff
+
+		if force > 0:
+			self.motor.setMotorV(voltage)
+		else:
+			self.motor.setMotorV(-voltage)

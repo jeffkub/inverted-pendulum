@@ -10,9 +10,9 @@ close all
 
 # Inverted pendulum parameters
 g = 9.81;   # Gravity constant [m/s]
-M = 2;      # Cart mass [kg]
-m = 0.1;    # Pendulum mass [kg]
-l = 0.5;    # Pendulum length to center of mass [m]
+M = 0.05;   # Cart mass [kg]
+m = 0.062;  # Pendulum mass [kg]
+l = 0.02;   # Pendulum length to center of mass [m]
 
 # Desired closed loop poles
 J = [-1+j*sqrt(3) -1-j*sqrt(3) -5 -5 -5];

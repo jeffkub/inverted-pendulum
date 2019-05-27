@@ -11,6 +11,12 @@
 		"unit": "teeth/rev"
 	},
 
+	"pulley_radius": {
+		"comment": "Effective radius of pulley",
+		"val": 0.00611,
+		"unit": "m"
+	},
+
 	"belt_pitch": {
 		"comment": "Belt tooth pitch",
 		"val": 0.002,
@@ -21,6 +27,24 @@
 		"comment": "Motor voltage scale",
 		"val": 0.005862237,
 		"unit": "V/step"
+	},
+
+	"motor_torque_coeff": {
+		"comment": "Motor coefficient for torque",
+		"val": 400.0,
+		"unit": "V/N-m"
+	},
+
+	"motor_speed_coeff": {
+		"comment": "Motor coefficient for speed",
+		"val": 0.208348289,
+		"unit": "V/(rad/s)"
+	},
+
+	"motor_start_torque": {
+		"comment": "Motor starting torque to overcome friction",
+		"val": 0.006,
+		"unit": "N-m"
 	},
 
 	"guard": {
@@ -37,6 +61,6 @@
 
 	"Khat": {
 		"comment": "State feedback gain matrix",
-		"val": [-157.634, -35.373, -56.065, -36.747, 50.968]
+		"val": [-1.208841  -0.017685  -0.056065  -0.034253   0.050968]
 	}
 }
