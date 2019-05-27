@@ -14,8 +14,6 @@
 
 #define BUF_LEN         32
 
-#define MOTOR_DEAD_ZONE 300
-
 static void encoder1APinChange();
 static void encoder2APinChange();
 
@@ -87,7 +85,7 @@ static void cmdSetMotor(long speed)
     speed = (speed >  2047) ?  2047 : speed;
     speed = (speed < -2047) ? -2047 : speed;
 
-    if(-MOTOR_DEAD_ZONE < speed && speed < MOTOR_DEAD_ZONE)
+    if(speed == 0)
     {
         motor->setSpeed(0);
         motor->run(RELEASE);
