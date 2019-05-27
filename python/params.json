@@ -1,26 +1,26 @@
 {
-	"x_scale": {
-		"comment": "X position encoder scale",
-		"val": 3.33333E-05,
-		"unit": "m/step"
+	"encoder_scale": {
+		"comment": "Encoder scale factor",
+		"val": 1200,
+		"unit": "steps/rev"
 	},
 
-	"theta_scale": {
-		"comment": "Theta angle encoder scale",
-		"val": 0.005235988,
-		"unit": "rad/step"
+	"pulley_teeth": {
+		"comment": "Pulley tooth count",
+		"val": 20,
+		"unit": "teeth/rev"
 	},
 
-	"motor_scale": {
-		"comment": "Motor force scale",
-		"val": 0.002302528,
-		"unit": "N/step"
+	"belt_pitch": {
+		"comment": "Belt tooth pitch",
+		"val": 0.002,
+		"unit": "m/tooth"
 	},
 
-	"motor_offset": {
-		"comment": "Motor force offset to account for friction",
-		"val": 0.9,
-		"unit": "N"
+	"motor_v_scale": {
+		"comment": "Motor voltage scale",
+		"val": 0.005862237,
+		"unit": "V/step"
 	},
 
 	"guard": {
