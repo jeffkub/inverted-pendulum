@@ -71,7 +71,7 @@ def main(argv):
 		controller.setup()
 		while True:
 			controller.run()
-	except Exception:
+	except:
 		print(traceback.format_exc())
 
 	# Make sure to disable the motor before exiting

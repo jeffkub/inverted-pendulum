@@ -43,7 +43,7 @@
 
 	"motor_start_torque": {
 		"comment": "Motor starting torque to overcome friction",
-		"val": 0.006,
+		"val": 0.0,
 		"unit": "N-m"
 	},
 
@@ -61,6 +61,6 @@
 
 	"Khat": {
 		"comment": "State feedback gain matrix",
-		"val": [-1.208841  -0.017685  -0.056065  -0.034253   0.050968]
+		"val": [-24.63307, -0.70740, -2.24261, -1.37011, 2.03874]
 	}
 }

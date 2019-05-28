@@ -52,14 +52,14 @@ class Cart:
 	def findLimits(self):
 		self.sensors.read()
 
-		self.motor.setMotorV(-5)
 		while not self.sensors.getSwitch(0):
+			self.motor.setMotorV(-5)
 			self.sensors.read()
 
 		x_min = self._getX()
 
-		self.motor.setMotorV(5)
 		while not self.sensors.getSwitch(1):
+			self.motor.setMotorV(5)
 			self.sensors.read()
 
 		x_max = self._getX()
@@ -83,15 +83,13 @@ class Cart:
 	def goTo(self, position):
 		self.sensors.read()
 
-		if (self._getX() - position) < -0.01:
+		while (self._getX() - position) < -0.01:
 			self.motor.setMotorV(5)
-			while (self._getX() - position) < -0.01:
-				self.sensors.read()
+			self.sensors.read()
 
-		elif (self._getX() - position) > 0.01:
+		while (self._getX() - position) > 0.01:
 			self.motor.setMotorV(-5)
-			while (self._getX() - position) > 0.01:
-				self.sensors.read()
+			self.sensors.read()
 
 		self.motor.setMotorV(0)
 
@@ -157,10 +155,13 @@ class Cart:
 			self.motor.setMotorV(0)
 			return
 
-		torque = abs(force) * self.pulley_radius + self.motor_start_torque
+		torque = force * self.pulley_radius
+
+		if torque > 0:
+			torque += self.motor_start_torque
+		else:
+			torque -= self.motor_start_torque
+
 		voltage = torque * self.motor_torque_coeff + self.motor_vel * self.motor_speed_coeff
 
-		if force > 0:
-			self.motor.setMotorV(voltage)
-		else:
-			self.motor.setMotorV(-voltage)
+		self.motor.setMotorV(voltage)
