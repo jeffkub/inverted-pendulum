@@ -30,7 +30,7 @@ class ArduinoIO:
 	def read(self):
 		self.serial.reset_input_buffer()
 
-		msg = 'R\n'
+		msg = '\nR\n'
 		self.serial.write(msg.encode('utf-8'))
 
 		response = self.serial.readline().decode('utf-8')
@@ -51,5 +51,5 @@ class ArduinoIO:
 		val = int(voltage / self.motor_v_scale)
 		clamped = max(-2047, min(2047, val))
 
-		msg = 'M1: ' + str(clamped) + '\n'
+		msg = '\nM1: ' + str(clamped) + '\n'
 		self.serial.write(msg.encode('utf-8'))

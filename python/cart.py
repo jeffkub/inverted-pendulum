@@ -96,7 +96,16 @@ class Cart:
 		self.motor.setMotorV(0)
 
 	def checkLimits(self):
-		return abs(self.last_x) <= (self.limit - self.guard)
+		if abs(self.last_x) > (self.limit - self.guard):
+			return False
+
+		if self.sensors.getSwitch(0) or self.sensors.getSwitch(1):
+			return False
+
+		if abs(self.last_theta) > (0.9 * self.start_angle):
+			return False
+
+		return True
 
 	def waitForPendulum(self):
 		while True:
