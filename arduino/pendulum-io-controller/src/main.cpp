@@ -11,6 +11,7 @@
 #define LIMIT2_PIN      11
 
 #define LED_PERIOD      250
+#define MOTOR_TIMEOUT   1000
 
 #define BUF_LEN         32
 
@@ -24,11 +25,15 @@ static void cmdSetMotor(long speed);
 static void handleLine(const char * line);
 static void handleSerial();
 
+static void handleMotorTimeout();
+
 static Adafruit_MotorShield motor_shield = Adafruit_MotorShield();
 static Adafruit_DCMotor * motor = motor_shield.getMotor(1);
 
 static volatile long encoder1 = 0;
 static volatile long encoder2 = 0;
+
+static unsigned long last_motor_update = 0;
 
 static void encoder1APinChange()
 {
@@ -100,6 +105,8 @@ static void cmdSetMotor(long speed)
         motor->setSpeed((-speed) << 1);
         motor->run(BACKWARD);
     }
+
+    last_motor_update = millis();
 }
 
 static void handleLine(const char * line)
@@ -144,6 +151,22 @@ static void handleSerial()
     }
 }
 
+static void handleMotorTimeout()
+{
+    unsigned long cur;
+
+    cur = millis();
+
+    if(cur - last_motor_update >= MOTOR_TIMEOUT)
+    {
+        last_motor_update = cur;
+
+        /* Disable the motor if no command has been received in a while */
+        motor->setSpeed(0);
+        motor->run(RELEASE);
+    }
+}
+
 void setup()
 {
     pinMode(LED_PIN, OUTPUT);
@@ -166,4 +189,5 @@ void loop()
 {
     handleBlink();
     handleSerial();
+    handleMotorTimeout();
 }
