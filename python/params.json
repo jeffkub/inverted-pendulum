@@ -42,14 +42,26 @@
 	},
 
 	"motor_start_torque": {
-		"comment": "Motor starting torque to overcome friction",
-		"val": 0.0,
+		"comment": "Starting torque to overcome friction",
+		"val": 0.004,
 		"unit": "N-m"
+	},
+
+	"motor_start_range": {
+		"comment": "Max speed to apply starting torque",
+		"val": 0.1,
+		"unit": "rad/s"
+	},
+
+	"start_angle": {
+		"comment": "Starting angle of pendulum at rest",
+		"val": 0.6108652,
+		"unit": "rad"
 	},
 
 	"guard": {
 		"comment": "X position guard to avoid hitting the end stops",
-		"val": 0.01,
+		"val": 0.015,
 		"unit": "m"
 	},
 

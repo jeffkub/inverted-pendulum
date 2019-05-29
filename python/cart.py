@@ -16,6 +16,8 @@ class Cart:
 		self.motor_torque_coeff = params['motor_torque_coeff']['val']
 		self.motor_speed_coeff = params['motor_speed_coeff']['val']
 		self.motor_start_torque = params['motor_start_torque']['val']
+		self.motor_start_range = params['motor_start_range']['val']
+		self.start_angle = params['start_angle']['val']
 
 		self.x_scale = belt_pitch * pulley_teeth
 		self.theta_scale = 2 * math.pi
@@ -77,7 +79,7 @@ class Cart:
 		self.sensors.read()
 
 		offset = self._getTheta()
-		self._setThetaOffset(-offset + math.pi)
+		self._setThetaOffset(-offset - self.start_angle)
 
 	# Unit is [m]
 	def goTo(self, position):
@@ -102,14 +104,14 @@ class Cart:
 			theta = self._getTheta()
 
 			# Wait for pendulum to be close to vertical
-			if abs(theta) < (0.1 * math.pi):
+			if abs(theta) < (0.2 * self.start_angle):
 				break
 
-			# Adjust depending on direction the user has rotated the pendulum
-			if theta > (1.5 * math.pi):
-				self._setThetaOffset(-2.0 * math.pi)
-			elif theta < (-1.5 * math.pi):
-				self._setThetaOffset(2.0 * math.pi)
+			# Adjust if the pendulum started at the opposite side
+			if theta > (1.5 * self.start_angle):
+				self._setThetaOffset(-2.0 * self.start_angle)
+			elif theta < (-1.5 * self.start_angle):
+				self._setThetaOffset(2.0 * self.start_angle)
 
 			# Wait a bit
 			time.sleep(0.1)
@@ -157,10 +159,12 @@ class Cart:
 
 		torque = force * self.pulley_radius
 
-		if torque > 0:
-			torque += self.motor_start_torque
-		else:
-			torque -= self.motor_start_torque
+		# Increase torque a bit when motor is stopped
+		if abs(self.motor_vel) < self.motor_start_range:
+			if torque > 0:
+				torque += self.motor_start_torque
+			else:
+				torque -= self.motor_start_torque
 
 		voltage = torque * self.motor_torque_coeff + self.motor_vel * self.motor_speed_coeff
 
