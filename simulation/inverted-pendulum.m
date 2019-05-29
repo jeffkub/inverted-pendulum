@@ -10,7 +10,7 @@ close all
 
 # Inverted pendulum parameters
 g = 9.81;   # Gravity constant [m/s]
-M = 1;      # Cart mass [kg]
+M = 1.1;    # Cart mass [kg]
 m = 0.062;  # Pendulum mass [kg]
 l = 0.1425; # Pendulum length to center of mass [m]
 
