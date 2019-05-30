@@ -13,7 +13,8 @@ class ArduinoIO:
 		self.serial = serial.Serial(port, baud, timeout=0.2)
 
 	def __del__(self):
-		self.serial.close()
+		if self.serial:
+			self.serial.close()
 
 	# Unit is [revs]
 	def getEncoder(self, index):

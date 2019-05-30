@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+import argparse
 import json
 import sys
 import time
@@ -61,11 +64,18 @@ class Controller:
 				break
 
 def main(argv):
-	with open('params.json') as file:
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--port', default='/dev/ttyACM0', help='Serial port')
+	parser.add_argument('--baud', default=115200, help='Baud rate')
+	parser.add_argument('--params', default='params.json', help='Parameter file')
+
+	args = parser.parse_args(argv[1:])
+
+	with open(args.params) as file:
 		params = json.load(file)
 
-	arduino = ArduinoIO(params, '/dev/ttyACM0')
-	controller = Controller(params, arduino, arduino)
+	arduino = ArduinoIO(params, port=args.port, baud=args.baud)
+	controller = Controller(params, sensors=arduino, motor=arduino)
 
 	try:
 		controller.setup()
