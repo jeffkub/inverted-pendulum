@@ -1,6 +1,6 @@
-# inverted-pendulum
+# Inverted Pendulum 
 
-Inverted pendulum control implemented in Python.
+Classic inverted pendulum control system implemented in Python.
 
 ## Parts List
 
@@ -19,3 +19,11 @@ Inverted pendulum control implemented in Python.
 - [Arduino Screw Terminal Shield](https://www.amazon.com/gp/product/B07HF2DD7T)
 - [12V DC Power Supply](https://www.amazon.com/gp/product/B073QTNF9F)
 - [12V Sealed Lead Acid Battery](https://www.amazon.com/gp/product/B00A82A4N8/)
+
+3D printed parts can be found under the mechanical folder.
+
+- Encoder Bracket.stl: Attaches encoder and motor to the linear rail, Qty 2
+- Front Left Bracket.stl: Attaches limit switch to linear rail
+- Front Right Bracket.stl: Attaches limit switch to linear rail
+- Stand.stl: Support stand, slides on the brackets, Qty 2
+- Pendulum Bracket.stl: Attaches pendulum + encoder to the slide
