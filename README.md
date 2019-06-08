@@ -2,6 +2,7 @@
 
 Classic inverted pendulum control system implemented in Python.
 
+
 ## Parts List
 
 - [Encoder](https://www.amazon.com/gp/product/B00UTIFCVA) Qty 2
@@ -27,3 +28,20 @@ Classic inverted pendulum control system implemented in Python.
 - Front Right Bracket.stl: Attaches limit switch to linear rail
 - Stand.stl: Support stand, slides on the brackets, Qty 2
 - Pendulum Bracket.stl: Attaches pendulum + encoder to the slide
+
+
+## Wiring Diagram
+
+TODO
+
+The 12V battery helps with motor transients. Without it, the power supply will frequently cut out when the motor changes directions.
+
+
+## Arduino Programming 
+
+TODO
+
+
+## Control Program 
+
+TODO
