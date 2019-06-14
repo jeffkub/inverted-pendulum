@@ -2,6 +2,7 @@
 
 Classic inverted pendulum control system implemented in Python.
 
+![Assembly](image/assembly.png)
 
 ## Parts List
 
