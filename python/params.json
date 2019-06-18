@@ -31,13 +31,13 @@
 
 	"motor_torque_coeff": {
 		"comment": "Motor coefficient for torque",
-		"val": 400.0,
+		"val": 1200.0,
 		"unit": "V/N-m"
 	},
 
 	"motor_speed_coeff": {
 		"comment": "Motor coefficient for speed",
-		"val": 0.208348289,
+		"val": 0.114591559,
 		"unit": "V/(rad/s)"
 	},
 
