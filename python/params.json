@@ -37,13 +37,13 @@
 
 	"motor_speed_coeff": {
 		"comment": "Motor coefficient for speed",
-		"val": 0.114591559,
+		"val": 0.205,
 		"unit": "V/(rad/s)"
 	},
 
 	"motor_start_torque": {
 		"comment": "Starting torque to overcome friction",
-		"val": 0.003,
+		"val": 0.0028,
 		"unit": "N-m"
 	},
 
@@ -73,6 +73,6 @@
 
 	"Khat": {
 		"comment": "State feedback gain matrix",
-		"val": [-29.7373, -3.4441, -8.7882, -5.4689, 7.9893]
+		"val": [-6.43403,  -0.68881,  -1.75765,  -1.09378,   1.59786]
 	}
 }
