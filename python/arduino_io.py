@@ -35,8 +35,10 @@ class ArduinoIO:
 		self.serial.write(msg.encode('utf-8'))
 
 		response = self.serial.readline().decode('utf-8')
-		vals = response.split('\t')
+		if not response:
+			return
 
+		vals = response.split('\t')
 		if len(vals) != 4:
 			print('Invalid response')
 			return
